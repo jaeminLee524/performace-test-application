@@ -23,6 +23,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-cache:2.7.14'
     implementation 'net.sf.ehcache:ehcache:2.9.1'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
