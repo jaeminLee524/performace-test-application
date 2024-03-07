@@ -1,5 +1,7 @@
 package com.study.performancetestapplication.controller;
 
+import com.study.performancetestapplication.service.NoticeCacheService;
+import com.study.performancetestapplication.service.NoticeService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class EhcacheController {
 
     private final EhCacheCacheManager cacheManager;
+    private final NoticeCacheService noticeCacheService;
 
-    @GetMapping("/api/ehcache")
+    @GetMapping("/api/cache")
     public Object findAll(){
 
         List<Map<String, List<String>>> result = cacheManager.getCacheNames().stream()
@@ -40,5 +43,10 @@ public class EhcacheController {
             .collect(Collectors.toList());
 
         return result;
+    }
+
+    @GetMapping("/api/cache/evict")
+    public void noticeCacheEvict() {
+        noticeCacheService.cacheEvict();
     }
 }
