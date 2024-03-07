@@ -23,21 +23,44 @@ public class EhcacheConfiguration {
 
         net.sf.ehcache.CacheManager manager = net.sf.ehcache.CacheManager.create(configuration);
 
-        CacheConfiguration getCacheConfig = new CacheConfiguration()
-            .maxEntriesLocalHeap(1000)
-            .maxEntriesLocalDisk(10000)
-            .eternal(false)
-            .timeToIdleSeconds(1800)
-            .timeToLiveSeconds(1800)
-            .memoryStoreEvictionPolicy("LRU")
-            .transactionalMode(TransactionalMode.OFF)
-            .persistence(new PersistenceConfiguration().strategy(PersistenceConfiguration.Strategy.LOCALTEMPSWAP))
-            .name("getCache");
-        Cache getAuthenticatedMenuByUriCache = new Cache(getCacheConfig);
+        Cache getNoticesCacheConfig = findAllNoticeCacheConfig();
+        manager.addCache(getNoticesCacheConfig);
 
-        // 캐시 추가
-        manager.addCache(getAuthenticatedMenuByUriCache);
+        Cache getAllNoticesByPage = findByPage();
+        manager.addCache(getAllNoticesByPage);
 
         return new EhCacheCacheManager(manager);
+    }
+
+    private static Cache findAllNoticeCacheConfig() {
+        CacheConfiguration getCacheConfig = new CacheConfiguration()
+            .maxEntriesLocalHeap(10000)
+            .maxEntriesLocalDisk(0)
+            .eternal(false)
+            .statistics(false)
+            .timeToIdleSeconds(60)
+            .timeToLiveSeconds(60)
+            .overflowToDisk(false)
+            .diskPersistent(false)
+            .memoryStoreEvictionPolicy("LRU")
+            .name("findAllNotices");
+
+        return new Cache(getCacheConfig);
+    }
+
+    private static Cache findByPage() {
+        CacheConfiguration getCacheConfig = new CacheConfiguration()
+            .maxEntriesLocalHeap(10000)
+            .maxEntriesLocalDisk(0)
+            .eternal(false)
+            .statistics(false)
+            .timeToIdleSeconds(60)
+            .timeToLiveSeconds(60)
+            .overflowToDisk(false)
+            .diskPersistent(false)
+            .memoryStoreEvictionPolicy("LRU")
+            .name("findByPage");
+
+        return new Cache(getCacheConfig);
     }
 }
